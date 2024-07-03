@@ -1,0 +1,49 @@
+1.Create a library project.
+   -ng new mylibrary.
+2.create the library.
+   -ng generate library demo-library.
+3.create component inside library.
+   -ng generate component new-component --project=demo-library.
+4.Add the component to the export section of ngModule of the library module(i.e. demo-library.module.ts).
+   to make available outside of the library module.
+ as below.- 
+       @NgModule({
+       declarations: [DemoLibraryComponent, NewComponentComponent],
+        imports: [CommonModule, HttpClientModule
+           ],
+      exports: [DemoLibraryComponent, NewComponentComponent]
+          })
+   
+   
+5.to use the library we have to first built it.
+   -ng build demo-library.
+6.Now we have to import the library module in the app module of the main project.
+  import { DemoLibraryModule } from 'demo-library';
+  Note:- we don't have to give proper path of library module, we just mention library name.
+  because when we generated the library, the CLI modified the tsconfig.json file which is in the root of our project. It added the library to the path entry.
+  
+  see below.-
+  
+   "paths": {
+      "demo-library": [
+        "dist/demo-library/demo-library",
+        "dist/demo-library"
+      ]
+    }
+	
+	
+7.to publish the library.
+ 
+  -ng build demo-library --prod
+  -cd dist/demo-library
+  -npm publish
+  
+  but before that we have to create npm account and login into this.
+  
+  After publishing in npm we can use the library anywhere.
+  
+**Note:-How to use the library to another project without publishing it to the npm repository?
+ => -cd lib/dist/My-lib
+    -npm pack
+ This will create a package tgz file which you can install directly in your app using by referring to this compressed file.
+    -npm install ../dist/My-lib/My-lib-0.0.1.tgz
